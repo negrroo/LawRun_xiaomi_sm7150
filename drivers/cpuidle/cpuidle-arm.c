@@ -104,13 +104,13 @@ static int __init arm_idle_init(void)
 		ret = dt_init_idle_driver(drv, arm_idle_state_match, 1);
 		if (ret <= 0) {
 			ret = ret ? : -ENODEV;
-			goto out_kfree_drv;
+			goto out_fail;
 		}
 
 		ret = cpuidle_register_driver(drv);
 		if (ret) {
 			pr_err("Failed to register cpuidle driver\n");
-			goto out_kfree_drv;
+			goto out_fail;
 		}
 
 		/*
@@ -162,6 +162,8 @@ out_fail:
 		cpuidle_unregister_device(dev);
 		cpuidle_unregister_driver(drv);
 		kfree(dev);
+		drv = cpuidle_get_driver();
+		cpuidle_unregister_driver(drv);
 		kfree(drv);
 	}
 
