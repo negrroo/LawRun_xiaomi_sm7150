@@ -643,11 +643,11 @@ static int dsi_panel_update_backlight(struct dsi_panel *panel,
 	dsi = &panel->mipi_device;
 
 #ifdef CONFIG_KLAPSE
-	set_rgb_slider(bl_lvl);
+	set_rgb_slider(bl_temp);
 #endif
 
 	if (panel->bl_config.bl_inverted_dbv)
-		bl_lvl = (((bl_lvl & 0xff) << 8) | (bl_lvl >> 8));
+		bl_temp = (((bl_temp & 0xff) << 8) | (bl_temp >> 8));
 
 	if (panel->bl_config.dcs_type_ss_ea || panel->bl_config.dcs_type_ss_eb)
 		rc = mipi_dsi_dcs_set_display_brightness_ss(dsi, bl_temp);
@@ -792,7 +792,7 @@ int dsi_panel_set_backlight(struct dsi_panel *panel, u32 bl_lvl)
 
 	pr_debug("backlight type:%d lvl:%d\n", bl->type, bl_lvl);
 
-	if (bl_lvl > 0)
+	if (bl_lvl > 0 && !panel->bl_config.dcs_type_ss_eb)
 		bl_lvl = ea_panel_calc_backlight(bl_lvl < bl_dc_min ? bl_dc_min : bl_lvl);
 
 	switch (bl->type) {
