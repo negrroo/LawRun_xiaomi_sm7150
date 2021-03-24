@@ -23,7 +23,7 @@
 	
 	    mka O=out ARCH=arm64 ANDROID_MAJOR_VERSION=r davinci_defconfig
 	    PATH="$(pwd)/toolchain/bin:$(pwd)/toolchain/bin:${PATH}" \
-	    make -j$(nproc --all) O=out \
+	    mka -j$(nproc --all) O=out \
 	    ARCH=arm64 \
 	    ANDROID_MAJOR_VERSION=r \
 	    CC=clang \
