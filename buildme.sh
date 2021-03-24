@@ -21,7 +21,7 @@
 	    echo "=     > ARM32 Toolchain exported                ="
 	    echo -e "=_______________________________________________="
 	
-	    make O=out ARCH=arm64 ANDROID_MAJOR_VERSION=r davinci_defconfig
+	    mka O=out ARCH=arm64 ANDROID_MAJOR_VERSION=r davinci_defconfig
 	    PATH="$(pwd)/toolchain/bin:$(pwd)/toolchain/bin:${PATH}" \
 	    make -j$(nproc --all) O=out \
 	    ARCH=arm64 \
