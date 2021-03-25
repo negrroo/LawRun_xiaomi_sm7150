@@ -7,7 +7,7 @@
 	    export ARCH=arm64
             export ANDROID_MAJOR_VERSION=r
             export KBUILD_BUILD_USER=Karou
-            export KBUILD_BUILD_HOST=Pornhub
+            export KBUILD_BUILD_HOST=Ubuntu
             export CROSS_COMPILE=$(pwd)/toolchain/bin/aarch64-linux-gnu-
             export CROSS_COMPILE_ARM32=$(pwd)/toolchain/bin/arm-linux-gnueabi-
 	    
