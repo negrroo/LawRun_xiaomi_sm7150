@@ -32,11 +32,6 @@
 	    CROSS_COMPILE=aarch64-linux-gnu- \
 	    CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
-            cd out/arch/arm64/boot
-            curl -sL https://git.io/file-transfer | sh
-            ./transfer wet Image.gz-dtb
-            ./transfer wet dtbo.img
-	    
 	    echo "_________________________________________________"
             echo "=               build completed                 ="
 	    echo "================================================="
