@@ -9794,7 +9794,6 @@ static void update_cpu_capacity(struct sched_domain *sd, int cpu)
 	unsigned long max_capacity;
 	int max_cap_cpu;
 	unsigned long flags;
-	bool update = false;
 
 	capacity *= arch_scale_max_freq_capacity(sd, cpu);
 	capacity >>= SCHED_CAPACITY_SHIFT;

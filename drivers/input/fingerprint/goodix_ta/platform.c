@@ -3,7 +3,6 @@
  *
  * Coypritht (c) 2017 Goodix
  */
-#define DEBUG
 #define pr_fmt(fmt)     "gf_platform: " fmt
 
 #include <linux/delay.h>
@@ -95,7 +94,7 @@ int gf_power_on(struct gf_dev *gf_dev)
 	}
 
 #endif
-	msleep(10);
+	usleep_range(10000, 10100);
 	return rc;
 }
 
@@ -123,9 +122,9 @@ int gf_hw_reset(struct gf_dev *gf_dev, unsigned int delay_ms)
 	}
 
 	gpio_direction_output(gf_dev->reset_gpio, 0);
-	mdelay(3);
+	usleep_range(6000, 12000);
 	gpio_set_value(gf_dev->reset_gpio, 1);
-	mdelay(delay_ms);
+	usleep_range(delay_ms * 2000, delay_ms * 2200);
 	pr_info("%s\n", __func__);
 	return 0;
 }

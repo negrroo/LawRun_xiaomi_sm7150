@@ -153,8 +153,6 @@ out_kfree_dev:
 	kfree(dev);
 out_unregister_drv:
 	cpuidle_unregister_driver(drv);
-out_kfree_drv:
-	kfree(drv);
 out_fail:
 	while (--cpu >= 0) {
 		dev = per_cpu(cpuidle_devices, cpu);
