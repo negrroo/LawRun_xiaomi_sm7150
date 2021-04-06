@@ -1,3 +1,4 @@
+	    echo "Exporting toolchain"
 	    export ARCH=arm64
             export ANDROID_MAJOR_VERSION=r
             export KBUILD_BUILD_USER=Karou
