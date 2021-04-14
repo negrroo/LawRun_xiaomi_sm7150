@@ -262,7 +262,7 @@ void rq_attach_root(struct rq *rq, struct root_domain *rd)
 	raw_spin_unlock_irqrestore(&rq->lock, flags);
 
 	if (old_rd)
-		call_rcu_sched(&old_rd->rcu, free_rootdomain);
+		call_rcu(&old_rd->rcu, free_rootdomain);
 }
 
 void sched_get_rd(struct root_domain *rd)
@@ -275,7 +275,7 @@ void sched_put_rd(struct root_domain *rd)
 	if (!atomic_dec_and_test(&rd->refcount))
 		return;
 
-	call_rcu_sched(&rd->rcu, free_rootdomain);
+	call_rcu(&rd->rcu, free_rootdomain);
 }
 
 static int init_rootdomain(struct root_domain *rd)
@@ -896,6 +896,7 @@ static struct sched_group *get_group(int cpu, struct sd_data *sdd)
 	struct sched_domain *sd = *per_cpu_ptr(sdd->sd, cpu);
 	struct sched_domain *child = sd->child;
 	struct sched_group *sg;
+	bool already_visited;
 
 	if (child)
 		cpu = cpumask_first(sched_domain_span(child));
@@ -903,9 +904,14 @@ static struct sched_group *get_group(int cpu, struct sd_data *sdd)
 	sg = *per_cpu_ptr(sdd->sg, cpu);
 	sg->sgc = *per_cpu_ptr(sdd->sgc, cpu);
 
-	/* For claim_allocations: */
-	atomic_inc(&sg->ref);
-	atomic_inc(&sg->sgc->ref);
+	/* Increase refcounts for claim_allocations: */
+	already_visited = atomic_inc_return(&sg->ref) > 1;
+	/* sgc visits should follow a similar trend as sg */
+	WARN_ON(already_visited != (atomic_inc_return(&sg->sgc->ref) > 1));
+
+	/* If we have already visited that group, it's already initialized. */
+	if (already_visited)
+		return sg;
 
 	if (child) {
 		cpumask_copy(sched_group_span(sg), sched_domain_span(child));
