@@ -3862,7 +3862,7 @@ static int ext4_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 	if ((old.dir != new.dir) && !fscrypt_has_permitted_context(new.dir, old.inode)) {
 		retval = -EXDEV;
-		goto end_rename;
+		goto release_bh;
 	}
 
 	new.bh = ext4_find_entry(new.dir, &new.dentry->d_name,
